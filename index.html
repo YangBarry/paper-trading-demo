@@ -13,7 +13,7 @@
   <!-- App Layout Container -->
   <div class="app-container">
 
-    <!-- Sidebar: Experiment Controller (Admin / Showcase Panel) -->
+    <!-- Sidebar: Demo Controller (Admin / Showcase Panel) -->
     <aside class="sidebar">
       <div class="sidebar-header">
         <span class="sidebar-title">
@@ -29,13 +29,13 @@
       <div class="sidebar-scrollable">
         
         <div class="control-group">
-          <label class="control-label">A/B Testing Variables</label>
+          <label class="control-label">Display Variables</label>
           
           <div class="toggle-switch-container">
             <!-- Citation Factor -->
             <div class="toggle-item">
               <div>
-                <div class="toggle-text">Citations Cue (H1)</div>
+                <div class="toggle-text">Citations Cue</div>
                 <div class="toggle-desc">Toggle inline report citations</div>
               </div>
               <div class="btn-pill-group" id="btn-group-citations">
@@ -47,7 +47,7 @@
             <!-- Length Factor -->
             <div class="toggle-item">
               <div>
-                <div class="toggle-text">Report Length (H1a)</div>
+                <div class="toggle-text">Report Length</div>
                 <div class="toggle-desc">Toggle full vs shortened text</div>
               </div>
               <div class="btn-pill-group" id="btn-group-length">
@@ -59,7 +59,7 @@
             <!-- Transparency Factor -->
             <div class="toggle-item">
               <div>
-                <div class="toggle-text">Transparency (H3)</div>
+                <div class="toggle-text">Transparency</div>
                 <div class="toggle-desc">Diagnostic stats & benchmarks</div>
               </div>
               <div class="btn-pill-group" id="btn-group-transparency">
@@ -73,19 +73,12 @@
         <div class="control-group" style="margin-top: 30px;">
           <label class="control-label">Timeline Simulator</label>
           <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
-            Advance the study window week-by-week. Watch performance accrue, accuracy update (transparency arm only), and logging track feedback loops.
+            Advance the timeline week-by-week. Watch performance accrue, accuracy update (when transparency is on), and logging track feedback loops.
           </p>
           <button class="btn-action btn-primary" id="btn-advance-week-el">
             <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M21,12L14,5V9C7,10 4,15 3,20C5.5,16.5 9,14.9 14,14.9V19L21,12Z"/></svg>
             Advance to Next Week
           </button>
-        </div>
-
-        <div class="control-group" style="margin-top: 30px;">
-          <label class="control-label">Research Rationale</label>
-          <div class="sidebar-note">
-            This demo isolates the <strong>illusion of capacity</strong>. In control mode, users see absolute portfolio gains and follow calls due to authority cues. In transparency mode, they receive index benchmarks & accuracy audits, driving recalibration.
-          </div>
         </div>
 
       </div>
@@ -161,7 +154,7 @@
               </div>
             </div>
 
-            <!-- Automated Rebalance (H4 Delegation Affordance) -->
+            <!-- Automated Rebalance -->
             <div style="margin-bottom: 15px;">
               <button class="btn-action btn-rebalance" id="btn-rebalance-el">
                 <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2A10 10 0 0 0 2 12A10 10 0 0 0 12 22A10 10 0 0 0 22 12A10 10 0 0 0 12 2M12 4A8 8 0 0 1 20 12A8 8 0 0 1 12 20A8 8 0 0 1 4 12A8 8 0 0 1 12 4M12 6V11H7V13H12V18L17 12L12 6Z"/></svg>
@@ -361,7 +354,7 @@
     <div class="survey-modal">
       <div class="survey-header">
         <div class="survey-title" id="survey-progress-title">Welcome to the Nasdaq 100 Challenge</div>
-        <div class="survey-subtitle">Stevens Behavioral Lab Study Onboarding Registration (3-minute survey)</div>
+        <div class="survey-subtitle">Onboarding Registration (3-minute survey)</div>
       </div>
       
       <div class="survey-body" id="survey-steps-container">
@@ -373,71 +366,6 @@
         <button class="btn-action btn-secondary" id="btn-survey-skip" style="width:140px; border-color: rgba(226, 232, 240, 0.3); color: var(--text-muted);">Skip (Demo)</button>
         <button class="btn-action btn-primary" id="btn-survey-next" style="width:180px; margin-left: auto;">Next</button>
       </div>
-  </div>
-
-  <!-- Stevens Certificate Modal Overlay -->
-  <div class="modal-overlay" id="certificate-modal-overlay">
-    <div class="certificate-modal">
-      <div class="certificate-wrapper" id="certificate-print-area">
-        <div class="certificate-border">
-          <div class="certificate-inner-border">
-            <div class="certificate-header">
-              <div class="cert-institution">STEVENS INSTITUTE OF TECHNOLOGY</div>
-              <div class="cert-lab">School of Business Behavioral Research Lab</div>
-            </div>
-            
-            <div class="certificate-title">Certificate of Participation</div>
-            <div class="certificate-subtitle">This certificate is proudly presented to</div>
-            
-            <div class="certificate-name" id="cert-participant-name">Participant Name</div>
-            
-            <div class="certificate-text">
-              for successfully completing the longitudinal behavioral study and gamified simulation
-              <br>
-              <span class="cert-highlight">"The Nasdaq 100 Challenge"</span>
-              <br>
-              conducted from September to November 2026.
-            </div>
-            
-            <div class="certificate-details">
-              <div class="cert-detail-item">
-                <span class="cert-detail-lbl">Active Weeks</span>
-                <span class="cert-detail-val" id="cert-active-weeks">8 of 8 Weeks</span>
-              </div>
-              <div class="cert-detail-item">
-                <span class="cert-detail-lbl">Completion Status</span>
-                <span class="cert-detail-val cert-status-qualified">QUALIFIED FOR LOTTERY</span>
-              </div>
-            </div>
-            
-            <div class="certificate-signatures">
-              <div class="cert-signature-box">
-                <div class="signature-line"></div>
-                <div class="signature-title">Dr. Zhenyu Cui</div>
-                <div class="signature-subtitle">Principal Investigator, Stevens School of Business</div>
-              </div>
-              <div class="cert-signature-box">
-                <div class="cert-seal">
-                  <svg viewBox="0 0 100 100" class="seal-svg" style="width: 60px; height: 60px; color: #a21caf;">
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="2,2"/>
-                    <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                    <path d="M50 20 L60 40 L80 40 L65 52 L70 72 L50 60 L30 72 L35 52 L20 40 L40 40 Z" fill="currentColor" opacity="0.1"/>
-                    <text x="50" y="47" font-size="6" text-anchor="middle" font-weight="bold" fill="currentColor">STEVENS</text>
-                    <text x="50" y="55" font-size="5" text-anchor="middle" fill="currentColor">BEHAVIORAL</text>
-                    <text x="50" y="62" font-size="5" text-anchor="middle" fill="currentColor">LAB</text>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="certificate-footer" style="display:flex; justify-content:center; gap: 15px; width:100%; margin-top:20px;">
-        <button class="btn-action btn-secondary" style="width: 140px;" id="btn-cert-share">Share Result</button>
-        <button class="btn-action btn-primary" style="width: 180px;" id="btn-cert-close">Claim & Close</button>
-      </div>
-      <canvas id="confetti-canvas" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:100;"></canvas>
-    </div>
   </div>
 
   <!-- Load App Logic (cache-busted so edits always load fresh) -->

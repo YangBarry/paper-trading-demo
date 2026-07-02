@@ -1299,12 +1299,12 @@ const SURVEY_QUESTIONS = [
   },
   {
     id: 'ai_profile',
-    title: "2. AI Experience & Attitude (The H2 Core)",
+    title: "2. AI Experience & Attitude",
     subtitle: "Please answer these questions about your chatbot usage.",
     questions: [
       {
         id: 'ai_use_frequency',
-        text: "In a typical week, on how many days do you use an AI chatbot? (Predictor E2)",
+        text: "In a typical week, on how many days do you use an AI chatbot?",
         type: 'select',
         options: ["0 days", "1-2 days", "3-4 days", "5 or more days"]
       },
@@ -1470,20 +1470,11 @@ function handleSurveyNext() {
     // Set Week 1 active status on onboarding completion
     state.activeWeeksTracker[1] = true;
     
-    // Check for "Halo Effect" condition to log warning or analysis
-    // H2 says greater overall experience with consumer AI (frequency) predicts higher reliance, net of stated trust.
-    const useFrequency = state.user.survey['ai_use_frequency'];
-    const statedTrust = state.user.survey['ai_trust'];
-    
-    const isHighExp = useFrequency === "3-4 days" || useFrequency === "5 or more days";
-    const transferRisk = isHighExp ? "HIGH (Frequent chatbot experience may inflate predictive reliance net of stated trust)" : "LOW/MODERATE";
-    
-    logEvent("HALO_EFFECT_DIAGNOSIS", {
-      useFrequency,
-      statedTrust,
-      transferRisk
+    logEvent("PROFILE_TAGGED", {
+      useFrequency: state.user.survey['ai_use_frequency'],
+      statedTrust: state.user.survey['ai_trust']
     });
-    
+
     document.getElementById('survey-modal-overlay').classList.remove('active');
     updateDashboard();
   }
@@ -1510,10 +1501,9 @@ function skipSurvey() {
   // Set Week 1 active status on onboarding completion
   state.activeWeeksTracker[1] = true;
   
-  logEvent("HALO_EFFECT_DIAGNOSIS", {
+  logEvent("PROFILE_TAGGED", {
     useFrequency: "3-4 days",
-    statedTrust: "Agree",
-    transferRisk: "HIGH (Frequent chatbot experience may inflate predictive reliance net of stated trust)"
+    statedTrust: "Agree"
   });
   
   document.getElementById('survey-modal-overlay').classList.remove('active');
@@ -1522,11 +1512,11 @@ function skipSurvey() {
 
 // Portfolio and Trading Mechanics
 // ---------------------------------------------------------------------------
-// Deferred market-close execution (Platform Design Part IV, Proposal §3.3)
+// Deferred market-close execution
 // A Buy/Sell click SUBMITS an order that stays PENDING until the next market
 // close. Orders are withdrawable and resubmittable until the cutoff; only the
-// NET TERMINAL STATE per ticker executes. The full submit/withdraw/resubmit
-// stream is logged to a behavioral-history ledger; concordance is computed only
+// final state per ticker executes. The full submit/withdraw/resubmit
+// stream is logged to a behavioral-history ledger, computed only
 // at execution, on the manual stock-level trade that actually fills.
 // ---------------------------------------------------------------------------
 function submitOrder(type) {
@@ -1653,7 +1643,7 @@ function executePendingOrders(execWeek) {
 }
 
 function recordFill(ticker, type, amount, shares, price, execWeek, submittedAt) {
-  // Primary DV: is the executed manual trade concordant with the AI call?
+  // Does the executed manual trade agree with the AI call?
   const call = AI_FORECASTS[execWeek][ticker];
   let concordant = 0;
   if (call === 'Bullish' && type === 'BUY') concordant = 1;
@@ -1851,7 +1841,7 @@ function renderPendingOrders() {
   }
 }
 
-// One-click Rebalance (Delegation DV, H4)
+// One-click Rebalance
 function executeRebalance() {
   const confirmation = confirm("Are you sure you want to rebalance your entire portfolio to match the AI Deep Research recommendations (Value-Weighted)? This will liquidate non-recommended names and split your capital among bullish recommendations.");
   if (!confirmation) return;
@@ -1928,7 +1918,7 @@ function executeRebalance() {
 // Advance Week
 function advanceWeek() {
   if (state.currentWeek >= 8) {
-    freezeLeaderboardAndShowCertificate();
+    freezeLeaderboard();
     return;
   }
   
@@ -2036,7 +2026,7 @@ function advanceWeek() {
     realizedReturn: weeklyReturn.toFixed(2) + "%"
   });
   
-  // If in transparency arm, we also calculate in-study accuracy log
+  // When transparency is on, also calculate the accuracy log
   if (state.factors.transparency === 'transparency') {
     const stats = getAccuracyStats(state.currentWeek - 1);
     logEvent("ACCURACY_UPDATE", {
@@ -2057,96 +2047,9 @@ function advanceWeek() {
   drawCharts();
 }
 
-function freezeLeaderboardAndShowCertificate() {
-  logEvent("STUDY_FREEZE", { message: "8-Week study period complete. Leaderboard frozen." });
-  
-  // Calculate total active weeks
-  const activeWeeksCount = Object.keys(state.activeWeeksTracker).filter(w => state.activeWeeksTracker[w] === true).length;
-  const qualified = activeWeeksCount >= 6;
-  
-  // Generate random Stevens participant code
-  document.getElementById('cert-participant-name').textContent = state.user.survey ? "STEVENS LAB ID #" + Math.floor(100000 + Math.random() * 900000) : "STEVENS PARTICIPANT";
-  document.getElementById('cert-active-weeks').textContent = `${activeWeeksCount} of 8 Weeks`;
-  
-  const statusVal = document.querySelector('.cert-status-qualified');
-  if (statusVal) {
-    if (qualified) {
-      statusVal.textContent = "QUALIFIED FOR LOTTERY";
-      statusVal.className = "cert-detail-val cert-status-qualified";
-      statusVal.style.color = "#059669";
-    } else {
-      statusVal.textContent = "NOT ELIGIBLE (Active < 6 weeks)";
-      statusVal.className = "cert-detail-val cert-status-disqualified";
-      statusVal.style.color = "#dc2626";
-    }
-  }
-  
-  // Show certificate overlay
-  const overlay = document.getElementById('certificate-modal-overlay');
-  if (overlay) overlay.classList.add('active');
-  
-  if (qualified) {
-    triggerConfetti();
-  }
-}
-
-function triggerConfetti() {
-  const canvas = document.getElementById('confetti-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  
-  canvas.width = canvas.parentElement.clientWidth;
-  canvas.height = canvas.parentElement.clientHeight;
-  
-  const colors = ['#f59e0b', '#3b82f6', '#10b981', '#ef4444', '#8b5cf6', '#ec4899'];
-  const particles = [];
-  
-  for (let i = 0; i < 150; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height - canvas.height,
-      r: Math.random() * 6 + 4,
-      d: Math.random() * canvas.height,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      tilt: Math.random() * 10 - 5,
-      tiltAngleIncremental: Math.random() * 0.07 + 0.02,
-      tiltAngle: 0
-    });
-  }
-  
-  let animationId;
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    let finished = true;
-    particles.forEach(p => {
-      p.tiltAngle += p.tiltAngleIncremental;
-      p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
-      p.x += Math.sin(p.tiltAngle);
-      p.tilt = Math.sin(p.tiltAngle - (p.r / 3)) * 15;
-      
-      if (p.y < canvas.height) finished = false;
-      
-      ctx.beginPath();
-      ctx.lineWidth = p.r;
-      ctx.strokeStyle = p.color;
-      ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
-      ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
-      ctx.stroke();
-    });
-    
-    if (!finished) {
-      animationId = requestAnimationFrame(draw);
-    }
-  }
-  
-  draw();
-  
-  // Clean up animation on close
-  document.getElementById('btn-cert-close').onclick = () => {
-    cancelAnimationFrame(animationId);
-    overlay.classList.remove('active');
-  };
+function freezeLeaderboard() {
+  logEvent("TIMELINE_COMPLETE", { message: "8-week timeline complete. Leaderboard frozen." });
+  updateDashboard();
 }
 
 // Reset Platform State
@@ -2172,8 +2075,6 @@ function resetPlatform() {
   state.activeWeeksTracker = { 1: true };
   
   // Close any overlays/banners
-  const certOverlay = document.getElementById('certificate-modal-overlay');
-  if (certOverlay) certOverlay.classList.remove('active');
   const banner = document.getElementById('corporate-action-banner');
   if (banner) banner.style.display = 'none';
   
@@ -2330,7 +2231,7 @@ function renderActiveReport() {
         references: [
           `Bloomberg Markets - ${ticker} Analyst Review - October 2025`,
           `Securities & Exchange Commission - Form 10-Q Filing - Q3 2025`,
-          `Stevens Institute FinTech Research Lab - Predictive Analytics`
+          `Internal Research Group - Predictive Analytics`
         ]
       },
       short: {
@@ -2370,7 +2271,7 @@ function renderActiveReport() {
   // 0. Forecast Tracker widget (traffic-light history for this ticker)
   html += buildForecastWidgetHTML(ticker, transparencyEnabled);
 
-  // 1. Transparency Skill-Diagnostic Block (Transparency Arm Only)
+  // 1. Skill-Diagnostic Block (shown only when transparency is on)
   if (transparencyEnabled) {
     const stats = getAccuracyStats(state.currentWeek);
     const accuracyTableHTML = `
@@ -2563,14 +2464,14 @@ function renderActiveReport() {
 }
 
 // ---------------------------------------------------------------------------
-// Forecast Tracker widget (Platform Design Part III.7 / Proposal §3.3)
+// Forecast Tracker widget
 // A compact in-report traffic-light strip for the selected ticker:
-//   • Forecast row (both arms): one light per week — green=Bullish,
+//   • Forecast row: one light per week — green=Bullish,
 //     yellow=Uncertain, red=Bearish — lit up to the current drop, "off" ahead.
-//   • Outcome row (TRANSPARENCY arm only): realized weekly return per week,
-//     green for a positive return, red for negative, with the % inside.
-// The outcome row is the transparency wedge: it is omitted entirely for the
-// control arm, which must self-compute accuracy from the price chart.
+//   • Outcome row (shown only when transparency is on): realized weekly return
+//     per week, green for a positive return, red for negative, with the % inside.
+// The outcome row is omitted entirely when transparency is off, requiring the
+// viewer to self-compute accuracy from the price chart.
 // ---------------------------------------------------------------------------
 function buildForecastWidgetHTML(ticker, transparencyEnabled) {
   const N = 8;
@@ -2587,7 +2488,7 @@ function buildForecastWidgetHTML(ticker, transparencyEnabled) {
     forecastCells.push(`<span class="ft-cell"><span class="ft-light ${cls}" title="Week ${w}: ${call}"></span></span>`);
   }
 
-  // Outcome chips (transparency arm only): realized return w -> w+1
+  // Outcome chips (shown only when transparency is on): realized return w -> w+1
   let outcomeRow = '';
   if (transparencyEnabled) {
     const outcomeCells = [];
@@ -3031,7 +2932,7 @@ function renderEmailContent() {
   let html = `
     <div class="email-card">
       <div class="email-meta-line">
-        <strong>From:</strong> study-coordinator@stevens.edu<br>
+        <strong>From:</strong> notifications@nasdaq100challenge.demo<br>
         <strong>Date:</strong> ${date}<br>
         <strong>Subject:</strong> [Nasdaq 100 Challenge] Week ${state.currentWeek} Reports Dropped!
       </div>
@@ -3070,8 +2971,8 @@ function renderEmailContent() {
   }
   
   html += `
-        <p>Log in to your dashboard to review the new reports, chat with the AI research assistant, and adjust your portfolio before market execution. Remember, completing the activity across 6 of the 8 weeks guarantees your Stevens Certificate of Participation and eligibility for the completion cash pool.</p>
-        <p>Best regards,<br>Stevens Experiment Coordinator</p>
+        <p>Log in to your dashboard to review the new reports, chat with the AI research assistant, and adjust your portfolio before market execution.</p>
+        <p>Best regards,<br>The Nasdaq 100 Challenge Team</p>
       </div>
     </div>
   `;
@@ -3870,16 +3771,7 @@ window.onload = () => {
     };
   }
   
-  // Bind certificate share button
-  const shareCertBtn = document.getElementById('btn-cert-share');
-  if (shareCertBtn) {
-    shareCertBtn.onclick = () => {
-      alert("Stevens Lab Link Copied! Sharing simulated pseudonymous research metrics.");
-      logEvent("CERTIFICATE_SHARED", { activeWeeks: Object.keys(state.activeWeeksTracker).filter(w => state.activeWeeksTracker[w]).length });
-    };
-  }
-  
-  // Bind factor switches (scientific A/B factors + demo controller toggles)
+  // Bind factor switches (display toggles)
   document.querySelectorAll('.btn-pill-group').forEach(group => {
     const factor = group.id.replace('btn-group-', '');
     group.querySelectorAll('.btn-pill').forEach(btn => {

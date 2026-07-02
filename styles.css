@@ -555,7 +555,7 @@ select:focus-visible {
   border-color: var(--text-dim);
 }
 
-/* One-click rebalance (H4 delegation affordance) */
+/* One-click rebalance */
 .btn-rebalance {
   gap: 8px;
   background: var(--purple-soft);
@@ -729,7 +729,7 @@ select:focus-visible {
   background-color: var(--card-bg);
 }
 
-/* Skill-Diagnostic Bundle (Transparency Only) */
+/* Skill-Diagnostic Bundle (shown only when transparency is on) */
 .diagnostic-panel {
   background: var(--purple-soft);
   border: 1px solid rgba(124, 58, 237, 0.18);
@@ -1557,236 +1557,6 @@ body.dark-theme ::-webkit-scrollbar-thumb:hover {
 }
 
 /* ===================================================================
-   Stevens Certificate Modal
-   =================================================================== */
-.certificate-modal {
-  background-color: var(--card-bg);
-  border-radius: var(--radius-lg);
-  padding: 30px;
-  max-width: 800px;
-  width: 90%;
-  box-shadow: var(--shadow-lg);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 101;
-  animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.certificate-wrapper {
-  width: 100%;
-  background-color: #fffdf7;
-  padding: 15px;
-  border: 1px solid #d6b25e;
-  border-radius: var(--radius-sm);
-}
-
-body.dark-theme .certificate-wrapper {
-  background-color: #101013;
-  border-color: #a78bfa;
-}
-
-.certificate-border {
-  border: 3px double #c9a24d;
-  padding: 28px;
-}
-
-body.dark-theme .certificate-border {
-  border-color: #a78bfa;
-}
-
-.certificate-inner-border {
-  border: 1px solid #e3cd96;
-  padding: 24px;
-  text-align: center;
-}
-
-body.dark-theme .certificate-inner-border {
-  border-color: rgba(167, 139, 250, 0.4);
-}
-
-.certificate-header {
-  margin-bottom: 25px;
-}
-
-.cert-institution {
-  font-size: 1rem;
-  font-weight: 750;
-  color: #1e3a8a;
-  letter-spacing: 0.16em;
-}
-
-body.dark-theme .cert-institution {
-  color: #a5b4fc;
-}
-
-.cert-lab {
-  font-size: 0.68rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: #6b6b74;
-  margin-top: 5px;
-  letter-spacing: 0.1em;
-}
-
-body.dark-theme .cert-lab {
-  color: #8f8f9a;
-}
-
-.certificate-title {
-  font-family: 'Georgia', serif;
-  font-size: 2.1rem;
-  font-weight: 700;
-  color: #a1741f;
-  margin-bottom: 10px;
-  letter-spacing: 0.01em;
-}
-
-body.dark-theme .certificate-title {
-  color: #c4b5fd;
-}
-
-.certificate-subtitle {
-  font-size: 0.85rem;
-  font-style: italic;
-  color: #6b6b74;
-  margin-bottom: 15px;
-}
-
-body.dark-theme .certificate-subtitle {
-  color: #b7b7c0;
-}
-
-.certificate-name {
-  font-family: 'Georgia', serif;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #18181b;
-  text-decoration: underline;
-  text-underline-offset: 6px;
-  text-decoration-thickness: 1px;
-  margin-bottom: 20px;
-}
-
-body.dark-theme .certificate-name {
-  color: #fafafa;
-}
-
-.certificate-text {
-  font-size: 0.88rem;
-  line-height: 1.6;
-  color: #3f3f46;
-  margin-bottom: 25px;
-  max-width: 560px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-body.dark-theme .certificate-text {
-  color: #d4d4d8;
-}
-
-.cert-highlight {
-  font-weight: 700;
-  color: #a1741f;
-}
-
-body.dark-theme .cert-highlight {
-  color: #c4b5fd;
-}
-
-.certificate-details {
-  display: flex;
-  justify-content: space-around;
-  background-color: rgba(201, 162, 77, 0.06);
-  border: 1px solid rgba(201, 162, 77, 0.2);
-  border-radius: var(--radius-sm);
-  padding: 12px;
-  margin-bottom: 25px;
-  max-width: 450px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-body.dark-theme .certificate-details {
-  background-color: rgba(167, 139, 250, 0.05);
-  border-color: rgba(167, 139, 250, 0.15);
-}
-
-.cert-detail-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.cert-detail-lbl {
-  font-size: 0.62rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #6b6b74;
-  font-weight: 600;
-}
-
-body.dark-theme .cert-detail-lbl {
-  color: #8f8f9a;
-}
-
-.cert-detail-val {
-  font-size: 0.85rem;
-  font-weight: 650;
-  color: #18181b;
-}
-
-body.dark-theme .cert-detail-val {
-  color: #fafafa;
-}
-
-.cert-status-qualified {
-  color: #059669;
-}
-
-.certificate-signatures {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 30px;
-  padding: 0 20px;
-}
-
-.cert-signature-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 200px;
-}
-
-.signature-line {
-  border-top: 1px solid #a1a1aa;
-  width: 100%;
-  margin-bottom: 6px;
-}
-
-.signature-title {
-  font-size: 0.72rem;
-  font-weight: bold;
-  color: #18181b;
-}
-
-body.dark-theme .signature-title {
-  color: #fafafa;
-}
-
-.signature-subtitle {
-  font-size: 0.6rem;
-  color: #6b6b74;
-  text-align: center;
-}
-
-body.dark-theme .signature-subtitle {
-  color: #8f8f9a;
-}
-
-/* ===================================================================
    Animations
    =================================================================== */
 @keyframes pulse {
@@ -2067,7 +1837,7 @@ body.dark-theme .signature-subtitle {
 .ft-light.uncertain { background: var(--neutral); box-shadow: 0 0 0 3px var(--neutral-glow); }
 .ft-light.off { background: var(--surface-subtle); border: 2px dashed var(--card-border-strong); box-shadow: none; }
 
-/* Outcome chips (transparency arm only) */
+/* Outcome chips (shown only when transparency is on) */
 .ft-out {
   width: 100%;
   max-width: 46px;
