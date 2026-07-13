@@ -1243,9 +1243,9 @@ select:focus-visible {
   background-color: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
-  width: 550px;
-  max-width: 90%;
-  max-height: 80vh;
+  width: 680px;
+  max-width: 94%;
+  max-height: 84vh;
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-lg);
@@ -1289,6 +1289,31 @@ select:focus-visible {
   display: block;
 }
 
+.survey-section-header {
+  margin: 22px 0 14px 0;
+  padding: 12px 16px;
+  background: var(--surface-subtle);
+  border-left: 3px solid var(--primary);
+  border-radius: var(--radius);
+}
+
+.survey-section-header:first-child {
+  margin-top: 0;
+}
+
+.survey-section-title {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.survey-section-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
 .survey-question {
   margin-bottom: 20px;
 }
@@ -1307,6 +1332,12 @@ select:focus-visible {
   gap: 7px;
 }
 
+.survey-options.horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .survey-option-btn {
   background-color: var(--card-bg);
   border: 1px solid var(--card-border-strong);
@@ -1318,6 +1349,13 @@ select:focus-visible {
   font-size: 0.82rem;
   cursor: pointer;
   transition: all var(--transition-fast);
+}
+
+.survey-options.horizontal .survey-option-btn {
+  flex: 1 1 calc(20% - 8px);
+  min-width: 105px;
+  text-align: center;
+  padding: 10px 10px;
 }
 
 .survey-option-btn:hover {

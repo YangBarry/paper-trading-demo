@@ -1274,45 +1274,178 @@ const REPORTS_DB = {
 // Onboarding Survey Configuration
 const SURVEY_QUESTIONS = [
   {
-    id: 'background_sop',
+    id: 'background',
     title: "1. Background & Experience",
+    subtitle: "Please tell us about your background, investing experience, and challenge expectations.",
     questions: [
       {
-        id: 'experience',
+        id: 'age_bracket',
+        text: "What is your age bracket?",
+        type: 'select',
+        layout: 'horizontal',
+        options: ["18–24", "25–34", "35–44", "45–54", "55–64", "65+"]
+      },
+      {
+        id: 'investing_experience',
         text: "What is your investing experience level?",
         type: 'select',
-        options: ["Novice (less than 1 year)", "Intermediate (1-5 years)", "Sophisticated (5+ years)"]
+        options: ["Novice (less than 1 year)", "Intermediate (1–5 years)", "Sophisticated (5+ years)"]
       },
       {
         id: 'trading_frequency',
         text: "How often do you trade real assets in a typical month?",
         type: 'select',
-        options: ["Rarely/Never", "1-5 times", "6-20 times", "20+ times (Active trader)"]
+        options: ["Rarely / Never", "1–5 times", "6–20 times", "20+ times (Active trader)"]
       },
       {
-        id: 'compounding_lit',
-        text: "Suppose you had $100 in a savings account and the interest rate was 2% per year. After 5 years, how much do you think you would have in the account if you left the money to grow?",
+        id: 'primary_motivation',
+        text: "What is your primary motivation for participating in this trading challenge?",
         type: 'select',
-        options: ["More than $102", "Exactly $102", "Less than $102", "Do not know"]
+        options: [
+          "Learning & practicing trading strategies",
+          "Testing AI / quantitative recommendations",
+          "Competing for high returns & leaderboard ranking",
+          "Curiosity / general exploration"
+        ]
+      },
+      {
+        id: 'self_predicted_finish',
+        text: "Where do you predict you will finish relative to other participants in this challenge? (Self-predicted finish)",
+        type: 'select',
+        layout: 'horizontal',
+        options: ["Top 10%", "Top 25%", "Top 50%", "Bottom 50%"]
       }
     ]
   },
   {
-    id: 'ai_profile',
-    title: "2. AI Experience & Attitude",
-    subtitle: "Please answer these questions about your chatbot usage.",
+    id: 'financial_literacy',
+    title: "2. Financial Literacy ('Big Three')",
+    subtitle: "Please answer these three standard financial knowledge questions (scored 0–3).",
     questions: [
       {
-        id: 'ai_use_frequency',
-        text: "In a typical week, on how many days do you use an AI chatbot?",
+        id: 'fin_lit_compounding',
+        text: "1. Suppose you had $100 in a savings account and the interest rate was 2% per year. After 5 years, how much do you think you would have in the account if you left the money to grow?",
         type: 'select',
-        options: ["0 days", "1-2 days", "3-4 days", "5 or more days"]
+        options: ["More than $102", "Exactly $102", "Less than $102", "Do not know"]
       },
       {
-        id: 'ai_trust',
-        text: "In general, how much do you trust what AI chatbots tell you? (Control E4)",
+        id: 'fin_lit_inflation',
+        text: "2. Imagine that the interest rate on your savings account was 1% per year and inflation was 2% per year. After 1 year, how much would you be able to buy with the money in this account?",
         type: 'select',
-        options: ["1 - Not at all", "2", "3", "4", "5 - Completely"]
+        options: ["More than today", "Exactly the same", "Less than today", "Do not know"]
+      },
+      {
+        id: 'fin_lit_risk',
+        text: "3. Please tell us whether this statement is true or false: 'Buying a single company's stock usually provides a safer return than a stock mutual fund.'",
+        type: 'select',
+        options: ["True", "False", "Do not know"]
+      }
+    ]
+  },
+  {
+    id: 'ai_experience',
+    title: "3. AI Experience & Attitude (H2 Core)",
+    subtitle: "Please answer these 9 questions covering experienced AI competence, task-differentiated beliefs, and personal innovativeness in IT (approx. 90 seconds).",
+    questions: [
+      {
+        id: 'e1_experienced_competence',
+        sectionHeader: "E1. Experienced Competence",
+        sectionDescription: "Experienced competence, not use frequency (captures accuracy/usefulness across both satisfied heavy users and skeptical power users).",
+        text: "When you use an AI chatbot, how often do its answers turn out to be accurate or useful?",
+        type: 'select',
+        layout: 'horizontal',
+        options: [
+          "1 - Rarely",
+          "2 - Occasionally",
+          "3 - Sometimes",
+          "4 - Often",
+          "5 - Almost always",
+          "I don't use AI chatbots"
+        ]
+      },
+      {
+        id: 'e2a_doc_writing',
+        sectionHeader: "E2. Task-Differentiated Competence Beliefs",
+        sectionDescription: "How good do you think AI chatbots are at each of the following? (1 = Very poor … 5 = Excellent)",
+        text: "(a) Writing and summarizing documents",
+        type: 'select',
+        layout: 'horizontal',
+        options: ["1 - Very poor", "2 - Poor", "3 - Fair", "4 - Good", "5 - Excellent"]
+      },
+      {
+        id: 'e2b_factual_qa',
+        text: "(b) Answering factual questions",
+        type: 'select',
+        layout: 'horizontal',
+        options: ["1 - Very poor", "2 - Poor", "3 - Fair", "4 - Good", "5 - Excellent"]
+      },
+      {
+        id: 'e2c_financial_guidance',
+        text: "(c) General financial guidance (saving, budgeting, diversification)",
+        type: 'select',
+        layout: 'horizontal',
+        options: ["1 - Very poor", "2 - Poor", "3 - Fair", "4 - Good", "5 - Excellent"]
+      },
+      {
+        id: 'e2d_stock_prediction',
+        text: "(d) Predicting which stocks will rise or fall next week",
+        type: 'select',
+        layout: 'horizontal',
+        options: ["1 - Very poor", "2 - Poor", "3 - Fair", "4 - Good", "5 - Excellent"]
+      },
+      {
+        id: 'e3_piit_1',
+        sectionHeader: "E3. Personal Innovativeness in IT (Agarwal & Prasad 1998)",
+        sectionDescription: "Please rate your agreement with each statement below (1 = Strongly disagree … 5 = Strongly agree):",
+        text: "1. If I heard about a new information technology, I would look for ways to experiment with it.",
+        type: 'select',
+        layout: 'horizontal',
+        options: [
+          "1 - Strongly disagree",
+          "2 - Disagree",
+          "3 - Neutral",
+          "4 - Agree",
+          "5 - Strongly agree"
+        ]
+      },
+      {
+        id: 'e3_piit_2',
+        text: "2. Among my peers, I am usually the first to try out new information technologies.",
+        type: 'select',
+        layout: 'horizontal',
+        options: [
+          "1 - Strongly disagree",
+          "2 - Disagree",
+          "3 - Neutral",
+          "4 - Agree",
+          "5 - Strongly agree"
+        ]
+      },
+      {
+        id: 'e3_piit_3',
+        text: "3. In general, I am hesitant to try out new information technologies.",
+        type: 'select',
+        layout: 'horizontal',
+        options: [
+          "1 - Strongly disagree",
+          "2 - Disagree",
+          "3 - Neutral",
+          "4 - Agree",
+          "5 - Strongly agree"
+        ]
+      },
+      {
+        id: 'e3_piit_4',
+        text: "4. I like to experiment with new information technologies.",
+        type: 'select',
+        layout: 'horizontal',
+        options: [
+          "1 - Strongly disagree",
+          "2 - Disagree",
+          "3 - Neutral",
+          "4 - Agree",
+          "5 - Strongly agree"
+        ]
       }
     ]
   }
@@ -1378,6 +1511,7 @@ function renderSurveyStep() {
   
   if (!stepContainer) return;
   stepContainer.innerHTML = '';
+  stepContainer.scrollTop = 0;
   
   const step = SURVEY_QUESTIONS[currentSurveyStepIdx];
   if (progressTitle) progressTitle.textContent = step.title;
@@ -1385,11 +1519,21 @@ function renderSurveyStep() {
   // Set subtitle if any
   const subtitleEl = document.createElement('div');
   subtitleEl.className = 'survey-subtitle';
-  subtitleEl.style.marginBottom = '20px';
+  subtitleEl.style.marginBottom = '18px';
   subtitleEl.textContent = step.subtitle || '';
   stepContainer.appendChild(subtitleEl);
   
   step.questions.forEach(q => {
+    if (q.sectionHeader) {
+      const secDiv = document.createElement('div');
+      secDiv.className = 'survey-section-header';
+      secDiv.innerHTML = `
+        <div class="survey-section-title">${q.sectionHeader}</div>
+        ${q.sectionDescription ? `<div class="survey-section-desc">${q.sectionDescription}</div>` : ''}
+      `;
+      stepContainer.appendChild(secDiv);
+    }
+
     const qDiv = document.createElement('div');
     qDiv.className = 'survey-question';
     
@@ -1401,6 +1545,9 @@ function renderSurveyStep() {
     if (q.type === 'select') {
       const optDiv = document.createElement('div');
       optDiv.className = 'survey-options';
+      if (q.layout === 'horizontal') {
+        optDiv.classList.add('horizontal');
+      }
       
       q.options.forEach(opt => {
         const btn = document.createElement('button');
@@ -1450,6 +1597,52 @@ function renderSurveyStep() {
   nextBtn.textContent = currentSurveyStepIdx === SURVEY_QUESTIONS.length - 1 ? 'Finish Registration' : 'Next';
 }
 
+function computeSurveyDerivedMetrics(answers) {
+  // 1. Financial Literacy Score ("Big Three", scored 0-3)
+  let finLitScore = 0;
+  if (answers.fin_lit_compounding === "More than $102") finLitScore++;
+  if (answers.fin_lit_inflation === "Less than today") finLitScore++;
+  if (answers.fin_lit_risk === "False") finLitScore++;
+
+  // Helper to extract leading number 1-5 from option string
+  const getRating = (val) => {
+    if (!val) return null;
+    const match = String(val).match(/^(\d)/);
+    return match ? parseInt(match[1], 10) : null;
+  };
+
+  // 2. E1: Experienced Competence (1 item)
+  const e1Rating = getRating(answers.e1_experienced_competence);
+  const isNonUser = answers.e1_experienced_competence === "I don't use AI chatbots";
+
+  // 3. E2: Task-Differentiated Competence Beliefs (4 items)
+  const e2a = getRating(answers.e2a_doc_writing) || 3;
+  const e2b = getRating(answers.e2b_factual_qa) || 3;
+  const e2c = getRating(answers.e2c_financial_guidance) || 3;
+  const e2d = getRating(answers.e2d_stock_prediction) || 3;
+  const normativeMean = (e2a + e2b + e2c) / 3;
+  const diffGap = normativeMean - e2d;
+
+  // 4. E3: Personal Innovativeness in IT (4 items, Agarwal & Prasad 1998)
+  // Item 3 is reverse-coded: "In general, I am hesitant to try out new information technologies."
+  const e3_1 = getRating(answers.e3_piit_1) || 3;
+  const e3_2 = getRating(answers.e3_piit_2) || 3;
+  const e3_3_raw = getRating(answers.e3_piit_3) || 3;
+  const e3_3 = 6 - e3_3_raw;
+  const e3_4 = getRating(answers.e3_piit_4) || 3;
+  const piitScore = (e3_1 + e3_2 + e3_3 + e3_4) / 4;
+
+  return {
+    financial_literacy_score: finLitScore,
+    e1_experienced_competence_score: isNonUser ? 0 : e1Rating,
+    e1_non_user: isNonUser,
+    e2_verifiable_normative_competence: Number(normativeMean.toFixed(2)),
+    e2_predictive_competence: e2d,
+    e2_differentiation_gap: Number(diffGap.toFixed(2)),
+    e3_piit_score: Number(piitScore.toFixed(2))
+  };
+}
+
 function handleSurveyNext() {
   // Validate that all questions in the current step are answered
   const step = SURVEY_QUESTIONS[currentSurveyStepIdx];
@@ -1464,15 +1657,28 @@ function handleSurveyNext() {
     renderSurveyStep();
   } else {
     // Finish
-    state.user.survey = { ...surveyAnswers };
+    const derived = computeSurveyDerivedMetrics(surveyAnswers);
+    state.user.survey = {
+      ...surveyAnswers,
+      derived
+    };
     logEvent("SURVEY_COMPLETED", state.user.survey);
     
     // Set Week 1 active status on onboarding completion
     state.activeWeeksTracker[1] = true;
     
     logEvent("PROFILE_TAGGED", {
-      useFrequency: state.user.survey['ai_use_frequency'],
-      statedTrust: state.user.survey['ai_trust']
+      ageBracket: state.user.survey['age_bracket'],
+      investingExperience: state.user.survey['investing_experience'],
+      tradingFrequency: state.user.survey['trading_frequency'],
+      primaryMotivation: state.user.survey['primary_motivation'],
+      selfPredictedFinish: state.user.survey['self_predicted_finish'],
+      financialLiteracyScore: derived.financial_literacy_score,
+      experiencedCompetence: derived.e1_experienced_competence_score,
+      verifiableNormativeBelief: derived.e2_verifiable_normative_competence,
+      predictiveBelief: derived.e2_predictive_competence,
+      differentiationGap: derived.e2_differentiation_gap,
+      piitScore: derived.e3_piit_score
     });
 
     document.getElementById('survey-modal-overlay').classList.remove('active');
@@ -1488,22 +1694,48 @@ function handleSurveyPrev() {
 }
 
 function skipSurvey() {
-  state.user.survey = {
-    investing_experience: "1-2 years",
-    trading_frequency: "Monthly",
-    financial_literacy_compounding: "More than $110",
-    ai_use_frequency: "3-4 days",
-    ai_trust: "Agree"
+  const defaultAnswers = {
+    age_bracket: "25–34",
+    investing_experience: "Intermediate (1–5 years)",
+    trading_frequency: "1–5 times",
+    primary_motivation: "Learning & practicing trading strategies",
+    self_predicted_finish: "Top 25%",
+    fin_lit_compounding: "More than $102",
+    fin_lit_inflation: "Less than today",
+    fin_lit_risk: "False",
+    e1_experienced_competence: "4 - Often",
+    e2a_doc_writing: "4 - Good",
+    e2b_factual_qa: "4 - Good",
+    e2c_financial_guidance: "3 - Fair",
+    e2d_stock_prediction: "2 - Poor",
+    e3_piit_1: "4 - Agree",
+    e3_piit_2: "3 - Neutral",
+    e3_piit_3: "2 - Disagree",
+    e3_piit_4: "4 - Agree"
   };
-  logEvent("SURVEY_SKIPPED", { message: "User bypassed onboarding survey in demo mode." });
+  const derived = computeSurveyDerivedMetrics(defaultAnswers);
+  state.user.survey = {
+    ...defaultAnswers,
+    derived
+  };
+  logEvent("SURVEY_SKIPPED", { message: "User bypassed onboarding survey in demo mode; applied baseline research profile." });
   logEvent("SURVEY_COMPLETED", state.user.survey);
   
   // Set Week 1 active status on onboarding completion
   state.activeWeeksTracker[1] = true;
   
   logEvent("PROFILE_TAGGED", {
-    useFrequency: "3-4 days",
-    statedTrust: "Agree"
+    ageBracket: defaultAnswers['age_bracket'],
+    investingExperience: defaultAnswers['investing_experience'],
+    tradingFrequency: defaultAnswers['trading_frequency'],
+    primaryMotivation: defaultAnswers['primary_motivation'],
+    selfPredictedFinish: defaultAnswers['self_predicted_finish'],
+    financialLiteracyScore: derived.financial_literacy_score,
+    experiencedCompetence: derived.e1_experienced_competence_score,
+    verifiableNormativeBelief: derived.e2_verifiable_normative_competence,
+    predictiveBelief: derived.e2_predictive_competence,
+    differentiationGap: derived.e2_differentiation_gap,
+    piitScore: derived.e3_piit_score
   });
   
   document.getElementById('survey-modal-overlay').classList.remove('active');
